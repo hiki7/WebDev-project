@@ -11,6 +11,7 @@
     </div>
     <div>
       <button type="submit" [disabled]="!loginForm.valid">Login</button>
+      <button type="button" (click)="onLogout()" *ngIf="authService.isLoggedIn()">Logout</button>
     </div>
     <div *ngIf="error" class="error">
       {{ error }}
