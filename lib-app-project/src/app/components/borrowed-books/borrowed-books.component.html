@@ -1,0 +1,10 @@
+<div *ngIf="isLoading">Loading...</div>
+<div *ngIf="!isLoading">
+  <h2>Your Borrowed Books</h2>
+  <ul>
+    <li *ngFor="let transaction of transactions">
+      Transaction ID: {{transaction.id}}, Book ID: {{transaction.bookId}}, Borrowed On: {{transaction.borrowDate | date}}, Return By: {{transaction.returnDate | date}}
+      <button (click)="returnBook(transaction.id)">Return Book</button>
+    </li>
+  </ul>
+</div>

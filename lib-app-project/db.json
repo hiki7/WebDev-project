@@ -1,0 +1,58 @@
+{
+  "books": [
+    {
+      "id": "1",
+      "title": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "isbn": "978-0-06-112008-4",
+      "available": true,
+      "pictureUrl": "https://example.com/images/book1.jpg"
+    },
+    {
+      "id": "2",
+      "title": "1984",
+      "author": "George Orwell",
+      "isbn": "978-0-452-28423-4",
+      "available": true,
+      "pictureUrl": "https://example.com/images/book2.jpg"
+    },
+    {
+      "id": "3",
+      "title": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "isbn": "978-0-7432-7356-5",
+      "available": false,
+      "pictureUrl": "https://example.com/images/book3.jpg"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "john_doe",
+      "email": "john.doe@example.com",
+      "password": "hashed_password_here"
+    },
+    {
+      "id": "2",
+      "username": "jane_doe",
+      "email": "jane.doe@example.com",
+      "password": "hashed_password_here"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1",
+      "bookId": 1,
+      "userId": 1,
+      "borrowDate": "2023-04-01",
+      "returnDate": "2023-04-15"
+    },
+    {
+      "id": "2",
+      "bookId": 3,
+      "userId": 2,
+      "borrowDate": "2023-04-10",
+      "returnDate": null
+    }
+  ]
+}
