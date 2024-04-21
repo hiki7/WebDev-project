@@ -15,7 +15,7 @@ export class RegistrationComponent {
   password = '';
   error: string | null = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   onRegister(form: NgForm): void {
     if (!form.valid) {

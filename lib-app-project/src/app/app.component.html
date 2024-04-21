@@ -1,1 +1,17 @@
+<header>
+    <div class="header-left">
+        <a [routerLink]="['/']" class="logo">
+            <img src="../assets/logo.png" class="logo-image" alt="logo-icon">
+            <p class="logo-title">lib.app</p>
+        </a>
+        <a [routerLink]="['/']" class="tabs">Home</a>
+        <a href="#" class="tabs">About</a>
+        <a [routerLink]="['add-book']" class="tabs">Add Book</a>
+    </div>
+
+    <div class="header-right">
+        <a [routerLink]="['borrowed-books']" class="tabs">Borrowed Books</a>
+        <a [routerLink]="['login']" class="tabs">Login</a>
+    </div> 
+</header>
 <router-outlet />

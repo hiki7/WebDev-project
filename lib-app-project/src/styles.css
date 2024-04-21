@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --main: #222831;
+    --secondary: #31363F;
+    --text: #EEEEEE;
+    --focus: #76ABAE;
+    --button-hover: #709699;
+}
+  
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+  
+body {
+    font-family: 'Quicksand', sans-serif;
+    background-color: var(--secondary);
+}
+  

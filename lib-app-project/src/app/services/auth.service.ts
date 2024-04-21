@@ -27,7 +27,8 @@ export class AuthService {
     return this.http.post<User>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         map(user => {
-          if (user && user.token) {
+          if (user && user.token && isPlatformBrowser(this.platformId)) {
+            // Only interact with localStorage if in the browser
             localStorage.setItem('currentUser', JSON.stringify(user));
             localStorage.setItem('token', user.token);  // Store token separately if needed
           }
@@ -41,17 +42,26 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('currentUser');
-    localStorage.removeItem('token');  // Ensure token is also cleared on logout
+    if (isPlatformBrowser(this.platformId)) {
+      // Only interact with localStorage if in the browser
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('token');  // Ensure token is also cleared on logout
+    }
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('currentUser');
+    if (isPlatformBrowser(this.platformId)) {
+      return !!localStorage.getItem('currentUser');
+    }
+    return false;  // Assume not logged in if not in browser
   }
 
   getCurrentUser(): User | null {
-    const user = localStorage.getItem('currentUser');
-    return user ? JSON.parse(user) : null;
+    if (isPlatformBrowser(this.platformId)) {
+      const user = localStorage.getItem('currentUser');
+      return user ? JSON.parse(user) : null;
+    }
+    return null;
   }
 
   getToken(): string | null {
@@ -69,5 +79,4 @@ export class AuthService {
       })
     );
   }
-  
 }
