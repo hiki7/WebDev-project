@@ -6,7 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BorrowedBooksComponent } from './components/borrowed-books/borrowed-books.component';
-import { AboutComponent } from './about/about.component';
+import { AboutComponent } from './components/about/about.component';
 
 const routes: Routes = [
   { path: 'borrowed-books', component: BorrowedBooksComponent },
