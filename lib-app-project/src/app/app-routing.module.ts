@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BorrowedBooksComponent } from './components/borrowed-books/borrowed-books.component';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
   { path: 'borrowed-books', component: BorrowedBooksComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'register', component: RegistrationComponent },
   { path: 'login', component: LoginComponent },
   { path: 'books', component: BookListComponent },
+  { path: 'about', component: AboutComponent},
   { path: '', redirectTo: '/books', pathMatch: 'full' }
 ];
 
