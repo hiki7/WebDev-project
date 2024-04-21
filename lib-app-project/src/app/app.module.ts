@@ -12,6 +12,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { AddBookComponent } from './components/add-book/add-book.component';
 import { BorrowedBooksComponent } from './components/borrowed-books/borrowed-books.component';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { BorrowedBooksComponent } from './components/borrowed-books/borrowed-boo
     LoginComponent,
     RegistrationComponent,
     AddBookComponent,
-    BorrowedBooksComponent
+    BorrowedBooksComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
