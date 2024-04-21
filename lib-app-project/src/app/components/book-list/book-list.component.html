@@ -1,0 +1,17 @@
+<!-- src/app/components/book-list/book-list.component.html -->
+<div *ngIf="isLoading">Loading books...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="!isLoading && !error">
+  <ul>
+    <li *ngFor="let book of books">
+      <div>
+        <h3>{{ book.title }} - {{ book.author }}</h3>
+        <p>ISBN: {{ book.isbn }}</p>
+        <p>
+          <img *ngIf="book.pictureUrl" [src]="book.pictureUrl" alt="{{ book.title }} cover image">
+        </p>
+        <button (click)="borrowBook(book.id)" [disabled]="!book.available">Borrow</button>
+      </div>
+    </li>
+  </ul>
+</div>

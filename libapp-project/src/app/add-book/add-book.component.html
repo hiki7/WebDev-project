@@ -1,0 +1,27 @@
+<!-- src/app/components/add-book/add-book.component.html -->
+<form #bookForm="ngForm" (ngSubmit)="onSubmit(bookForm)">
+  <div>
+    <label for="title">Title:</label>
+    <input type="text" id="title" name="title" [(ngModel)]="newBook.title" required>
+  </div>
+  <div>
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" [(ngModel)]="newBook.author" required>
+  </div>
+  <div>
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" name="isbn" [(ngModel)]="newBook.isbn" required>
+  </div>
+  <div>
+    <label for="pictureUrl">Picture URL:</label>
+    <input type="text" id="pictureUrl" name="pictureUrl" [(ngModel)]="newBook.pictureUrl">
+  </div>
+  <div>
+    <label>
+      <input type="checkbox" [(ngModel)]="newBook.available" name="available"> Available
+    </label>
+  </div>
+  <div>
+    <button type="submit" [disabled]="!bookForm.valid">Add Book</button>
+  </div>
+</form>
