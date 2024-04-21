@@ -1,7 +1,0 @@
-<!-- src/app/components/book-list/book-list.component.html -->
-<div *ngFor="let book of books">
-  <h3>{{ book.title }} by {{ book.author }}</h3>
-  <p>ISBN: {{ book.isbn }}</p>
-  <img *ngIf="book.pictureUrl" [src]="book.pictureUrl" alt="Cover image of {{ book.title }}">
-  <button *ngIf="book.available" (click)="borrowBook(book.id)">Borrow</button>
-</div>
