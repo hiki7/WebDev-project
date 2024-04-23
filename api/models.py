@@ -1,28 +1,27 @@
 from django.db import models
 
 class User(models.Model):
-    id = models.IntegerField(primary_key=True)
     isManager = models.BooleanField()
-    name = models.CharField(max_length=50)
-    email = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
+    second_name = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=50, null=True)
+    password = models.CharField(max_length=50, null=True)
 
     def __str__(self) -> str:
         return self.name
 
 
 class Category(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, null=True)
 
     def __str__(self) -> str:
         return self.name
 
 
 class Book(models.Model):
-    id = models.IntegerField(primary_key=True)
-    title = models.CharField(max_length=50)
-    author = models.CharField(max_length=50)
-    Category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, null=True)
+    author = models.CharField(max_length=50, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     available = models.BooleanField()
     
     def __str__(self) -> str:
@@ -30,7 +29,6 @@ class Book(models.Model):
 
 
 class Transaction(models.Model):
-    id = models.IntegerField(primary_key=True)
     bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
     userId = models.ForeignKey(User, on_delete=models.CASCADE)
     borrowed_date = models.DateField()
