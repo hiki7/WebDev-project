@@ -19,7 +19,6 @@ export class AddBookComponent {
       title: ['', Validators.required],
       author: ['', Validators.required],
       isbn: ['', Validators.required],
-      available: [true],
       pictureUrl: ['']
     });
   }
