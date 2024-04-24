@@ -7,9 +7,11 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler) {
-    if (!request.url.endsWith('/register')) {
+    // Exclude endpoints that should not have the Authorization header
+    if (!(request.url.endsWith('/register') || request.url.endsWith('/token') || request.url.endsWith('/token/refresh'))) {
       const token = this.authService.getToken();
       if (token) {
+        // Clone the request to add the new header.
         request = request.clone({
           setHeaders: {
             Authorization: `Bearer ${token}`
@@ -18,5 +20,5 @@ export class AuthInterceptor implements HttpInterceptor {
       }
     }
     return next.handle(request);
-  }  
+  }
 }

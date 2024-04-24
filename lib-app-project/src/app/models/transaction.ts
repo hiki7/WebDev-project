@@ -1,8 +1,8 @@
 export interface Transaction {
-    id: number;
-    userId: number;
+    id?: number;
     bookId: number;
-    borrowDate: Date;
-    returnDate: Date;
+    userId: number;
+    borrowedDate: string;
+    returnDate: string;
 }
   

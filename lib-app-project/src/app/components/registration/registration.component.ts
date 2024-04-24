@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../../models/user'; // Ensure you import the User model
 
 @Component({
   selector: 'app-registration',
@@ -21,15 +22,24 @@ export class RegistrationComponent {
     if (!form.valid) {
       return;
     }
-    this.authService.register(this.username, this.email, this.password).subscribe({
-      next: () => {
-        console.log('Registration successful');
-        this.router.navigate(['/login']); // Redirect to login page or dashboard
+    // Construct user object
+    const newUser: User = {
+      name: this.username,
+      secondName: '', // Assume you have a mechanism or additional field to capture this if needed
+      email: this.email,
+      password: this.password,
+      isManager: false // Assume a default value or provide a mechanism to set this
+    };
+    
+    this.authService.register(newUser).subscribe({
+      next: (user) => {
+        console.log('Registration successful', user);
+        this.router.navigate(['/books']); // Redirect to books page or any other appropriate route after registration
       },
       error: (error) => {
-        this.error = error.message; // Display the actual error message from the server
+        this.error = 'Registration failed. ' + (error.error.message || 'Please try again later.');
         console.error('Registration error:', error);
       }
     });
-  }  
+  }
 }
