@@ -1,8 +1,9 @@
 export interface Book {
-    id: number;
+    id?: number;
     title: string;
     author: string;
-    isbn: string;
+    categoryId: number;
     available: boolean;
     pictureUrl?: string;
-}
+  }
+  

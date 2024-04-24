@@ -1,10 +1,11 @@
+<!-- src/app/components/borrowed-books/borrowed-books.component.html -->
 <div *ngIf="isLoading">Loading...</div>
 <div *ngIf="!isLoading">
   <h2>Your Borrowed Books</h2>
   <ul>
     <li *ngFor="let transaction of transactions">
-      Transaction ID: {{transaction.id}}, Book ID: {{transaction.bookId}}, Borrowed On: {{transaction.borrowDate | date}}, Return By: {{transaction.returnDate | date}}
-      <button (click)="returnBook(transaction.id)">Return Book</button>
+      Transaction ID: {{transaction.id}}, Book ID: {{transaction.bookId}}, Borrowed On: {{transaction.borrowedDate | date:'mediumDate'}}, Return By: {{transaction.returnDate | date:'mediumDate'}}
+      <button *ngIf="transaction.id !== undefined" (click)="returnBook(transaction.id)">Return Book</button>
     </li>
   </ul>
 </div>

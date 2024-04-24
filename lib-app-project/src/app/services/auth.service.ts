@@ -1,16 +1,10 @@
-// src/app/services/auth.service.ts
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../environments/environment';
-
-export interface User {
-  id: number;
-  email: string;
-  token?: string;
-}
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -24,16 +18,9 @@ export class AuthService {
   ) {}
 
   login(email: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/login`, { email, password })
+    return this.http.post<{ access: string; refresh: string }>(`${this.apiUrl}api/token/`, { email, password })
       .pipe(
-        map(user => {
-          if (user && user.token && isPlatformBrowser(this.platformId)) {
-            // Only interact with localStorage if in the browser
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            localStorage.setItem('token', user.token);  // Store token separately if needed
-          }
-          return user;
-        }),
+        map(response => this.handleAuthentication(email, '', '', false, password, response.access, response.refresh)),
         catchError(error => {
           console.error('Login error:', error);
           return throwError(() => new Error('Login failed, please try again later.'));
@@ -43,17 +30,17 @@ export class AuthService {
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
-      // Only interact with localStorage if in the browser
       localStorage.removeItem('currentUser');
-      localStorage.removeItem('token');  // Ensure token is also cleared on logout
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
     }
   }
 
   isLoggedIn(): boolean {
     if (isPlatformBrowser(this.platformId)) {
-      return !!localStorage.getItem('currentUser');
+      return !!localStorage.getItem('currentUser') && !!localStorage.getItem('token');
     }
-    return false;  // Assume not logged in if not in browser
+    return false;
   }
 
   getCurrentUser(): User | null {
@@ -71,12 +58,24 @@ export class AuthService {
     return null;
   }
 
-  register(username: string, email: string, password: string): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/register`, { username, email, password }).pipe(
-      catchError(error => {
-        console.error('Registration error:', error);
-        return throwError(() => new Error(error.error.message || 'Registration failed, please try again later.'));
-      })
-    );
+  register(user: User): Observable<User> {
+    return this.http.post<{ access: string; refresh: string }>(`${this.apiUrl}api/register/`, user)
+      .pipe(
+        map(response => this.handleAuthentication(user.email, user.name, user.secondName, user.isManager, user.password, response.access, response.refresh)),
+        catchError(error => {
+          console.error('Registration error:', error);
+          return throwError(() => new Error(error.error.message || 'Registration failed, please try again later.'));
+        })
+      );
+  }
+
+  private handleAuthentication(email: string, name: string, secondName: string, isManager: boolean, password: string, accessToken: string, refreshToken: string): User {
+    const user: User = { email, name, secondName, isManager, password, token: accessToken };
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+    }
+    return user;
   }
 }

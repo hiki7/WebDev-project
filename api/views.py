@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from .serializers import *
 from rest_framework import status
 from rest_framework.response import Response
@@ -6,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.permissions import AllowAny
+from .models import *
+from rest_framework import generics
 
 
 
@@ -77,6 +80,42 @@ class UserListAPIView(APIView):
             return Response(users.data)
         return Response(users.errors,
                         status=status.HTTP_400_BAD_REQUEST)
+    
+
+class UserTransactionsAPIView(generics.ListAPIView):
+    serializer_class = TransactionSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs.get('user_id')
+        return Transaction.objects.filter(userId=user_id)
+
+class BorrowBookAPIView(APIView):
+    def post(self, request):
+        # Assume data contains 'book_id' and 'user_id'
+        book = Book.objects.get(id=request.data['book_id'])
+        user = User.objects.get(id=request.data['user_id'])
+
+        if book.available:
+            transaction = Transaction.objects.create(
+                bookId=book,
+                userId=user,
+                borrowed_date=timezone.now(),
+                return_date=timezone.now() + timezone.timedelta(days=14)  # Example: 2 weeks later
+            )
+            book.available = False
+            book.save()
+            return Response(TransactionSerializer(transaction).data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "Book is not available"}, status=status.HTTP_400_BAD_REQUEST)
+
+class ReturnBookAPIView(APIView):
+    def post(self, request, transaction_id):
+        transaction = Transaction.objects.get(id=transaction_id)
+        transaction.return_date = timezone.now()
+        transaction.bookId.available = True
+        transaction.bookId.save()
+        transaction.save()
+        return Response(TransactionSerializer(transaction).data, status=status.HTTP_200_OK)
 
 
 @api_view(['GET', 'POST'])

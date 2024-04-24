@@ -11,6 +11,7 @@ import { Transaction } from '../../models/transaction';
 export class BorrowedBooksComponent implements OnInit {
   transactions: Transaction[] = [];
   isLoading = false;
+  error: string | null = null;
 
   constructor(private apiService: ApiService, private authService: AuthService) {}
 
@@ -28,23 +29,28 @@ export class BorrowedBooksComponent implements OnInit {
           this.isLoading = false;
         },
         error: (error) => {
+          this.error = 'Failed to load transactions. Please try again later.';
           console.error('Error fetching transactions:', error);
           this.isLoading = false;
         }
       });
+    } else {
+      this.error = 'User not identified. Please login.';
     }
   }
 
   returnBook(transactionId: number) {
-    this.apiService.returnBook(transactionId).subscribe({
-      next: () => {
-        alert('Book returned successfully!');
-        this.loadUserTransactions();  // Reload the transactions list
-      },
-      error: (error) => {
-        alert('Failed to return book');
-        console.error(error);
-      }
-    });
+    if (confirm('Are you sure you want to return this book?')) {
+      this.apiService.returnBook(transactionId).subscribe({
+        next: () => {
+          alert('Book returned successfully!');
+          this.loadUserTransactions();  // Reload the transactions list to update the view
+        },
+        error: (error) => {
+          alert('Failed to return book. Please try again later.');
+          console.error('Return book error:', error);
+        }
+      });
+    }
   }
 }

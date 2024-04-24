@@ -17,16 +17,15 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
-
 class Book(models.Model):
     title = models.CharField(max_length=50, null=True)
     author = models.CharField(max_length=50, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     available = models.BooleanField()
-    
+    pictureUrl = models.CharField(max_length=255, null=True, blank=True)
+
     def __str__(self) -> str:
         return self.title
-
 
 class Transaction(models.Model):
     bookId = models.ForeignKey(Book, on_delete=models.CASCADE)
@@ -35,6 +34,6 @@ class Transaction(models.Model):
     return_date = models.DateField()
 
     def __str__(self):
-        return f"Tranzaction №{self.id}"
+        return f"Transaction №{self.id}"
 
 

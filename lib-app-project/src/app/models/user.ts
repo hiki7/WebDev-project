@@ -1,6 +1,10 @@
 export interface User {
-    id: number;
+    id?: number;
+    isManager: boolean;
+    name: string;
+    secondName: string;
     email: string;
-    username?: string;
+    password: string;
     token?: string;
 }
+  

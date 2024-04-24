@@ -1,17 +1,18 @@
 <!-- src/app/components/book-list/book-list.component.html -->
-<div *ngIf="isLoading">Loading books...</div>
-<div *ngIf="error">{{ error }}</div>
+<div *ngIf="isLoading" class="alert alert-info">Loading books...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 <div *ngIf="!isLoading && !error">
-  <ul>
-    <li *ngFor="let book of books">
-      <div>
-        <h3>{{ book.title }} - {{ book.author }}</h3>
-        <p>ISBN: {{ book.isbn }}</p>
-        <p>
-          <img *ngIf="book.pictureUrl" [src]="book.pictureUrl" alt="{{ book.title }} cover image">
-        </p>
-        <button (click)="borrowBook(book.id)" [disabled]="!book.available">Borrow</button>
+  <div class="row">
+    <div class="col-md-4 mb-3" *ngFor="let book of books">
+      <div class="card">
+        <img *ngIf="book.pictureUrl" [src]="book.pictureUrl" alt="{{ book.title }} cover" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }} - {{ book.author }}</h5>
+          <button (click)="borrowBook(book.id)" [disabled]="!book.available" class="btn btn-primary">
+            {{ book.available ? 'Borrow' : 'Unavailable' }}
+          </button>
+        </div>
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
